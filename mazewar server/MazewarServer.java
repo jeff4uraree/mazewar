@@ -1,0 +1,43 @@
+import java.io.IOException;
+import java.net.ServerSocket;
+
+
+public class MazewarServer {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) throws IOException {
+
+		// TODO: 
+		// Set up server 
+		// enqueue (might be moved to another thread)
+		// dequeue and broadcast (might be moved to another thread)
+
+		ServerSocket serverSocket = null;
+        	boolean listening = true;	
+		
+		try
+		{
+			// Check if num of arg is valid
+			if(args.length == 1) {
+				serverSocket = new ServerSocket(Integer.parseInt(args[0]));
+			} else {
+				System.err.println("ERROR: Invalid arguments!");
+				System.exit(-1);
+			}
+			catch (IOException e) {
+			    System.err.println("ERROR: Could not listen on port!");
+			    System.exit(-1);
+			}
+
+			while (listening) {
+				new MazewarHandlerThread(serverSocket.accept()).start();
+			}
+		
+			serverSocket.close();	
+		}
+
+	}
+
+}
